@@ -1,0 +1,158 @@
+* {
+    box-sizing: border-box;
+    margin: 0px;
+}
+
+body {
+    background-color: black;
+    overflow-x: hidden;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+:root {
+    --grid-columns: repeat(3, 100px);
+    --grid-rows: repeat(3, 100px);
+    --color: #00ff37;
+}
+
+.ripple-target {
+    filter: url(#ripple-filter);
+
+
+}
+
+
+input {
+    width: 265px;
+    height: 50px;
+    border-radius: 10px;
+    border: none;
+    text-align: center;
+    font-size: 25px;
+    background-color: black;
+    color: white;
+
+
+
+}
+
+input:focus {
+    outline: none;
+}
+
+.instruction {
+    height: 400px;
+    font-size: 30px;
+    color: white;
+    margin: 0;
+    font-family: sans-serif;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+@keyframes jumpWave {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+        background-color: #333;
+    }
+
+    20% {
+
+        transform: translateY(-30px) scale(1.08);
+        background-color: var(--color);
+        box-shadow: 0 10px 20px rgba(0, 210, 255, 0.4);
+    }
+}
+
+.trigger-wave .box {
+    animation-name: jumpWave;
+}
+
+.box {
+    width: 100%;
+    height: 100%;
+    background-color: #333;
+    border-radius: 4px;
+    animation-duration: 1.2s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 1;
+    animation-delay: calc(var(--d) * 0.12s);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 25px;
+    transition: color 0.75s ease-out;
+    transition-delay: calc(var(--d) * 0.12s);
+}
+
+.box.text-fade {
+    color: transparent;
+}
+
+.main-box {
+    display: grid;
+    grid-template-columns: var(--grid-columns);
+    grid-template-rows: var(--grid-rows);
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.timer {
+    color: white;
+    font-size: 46px;
+    position: absolute;
+    top: 12px;
+    left: 25px;
+}
+
+.main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-box {
+    position: relative;
+    top: 75px;
+}
+
+.heart {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.hearts {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    position: absolute;
+    top: 12px;
+    right: 25px;
+}
+.equation {
+    color: white;
+    font-size: 50px;
+
+}
+.highscore{
+    font-size: 30px;
+    color: white;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+}

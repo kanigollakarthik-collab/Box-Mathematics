@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ripple Overlay</title>
+    <link rel="stylesheet" href="stylesheet.css">
+</head>
+<body>
+
+<svg style="position: absolute; width: 0; height: 0; overflow: hidden;">
+  <defs>       
+    <filter id="ripple-filter" primitiveUnits="userSpaceOnUse" x="-50%" y="-50%" width="200%" height="200%">
+        
+        <feFlood flood-color="#808080" result="neutral" />
+        
+        <feMerge id="merge-node" result="final-map">
+            <feMergeNode in="neutral" />
+        </feMerge>
+      
+        <feDisplacementMap id="displacement-map"
+                         xChannelSelector="R" 
+                         yChannelSelector="G" 
+                         in="SourceGraphic" 
+                         in2="final-map"
+                         result="displacementMap"
+                         scale="40" />
+    </filter>    
+  </defs>
+</svg>
+<div class="instruction">Press Enter to continue</div>
+<div class="main">
+  <div class="timer">
+
+  </div>
+  <div class="equation">
+    
+  </div>
+  <div class="hearts">
+
+  </div>
+  <div class="main-box">
+   
+  </div>
+  <div class="highscore">
+    
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js"></script>
+<script src="script.js"></script>
+<script src="wave.js"></script>
+</body>
+</html>
