@@ -79,11 +79,11 @@ function create(l) {
     r = 3;
     c = 3;
   } else if (l === 2) {
-    n = 80;
+    n = 90;
     r = 4;
     c = 4;
   } else if (l === 3) {
-    n = 60;
+    n = 80;
     r = 5;
     c = 5;
   }
@@ -420,5 +420,9 @@ async function gamestart() {
     instruct.classList.remove("ripple-target");
     instruct.innerHTML = `GAME COMPLETED <br> SCORE:${playerdata.realscore}<br> Press Enter for again`;
     await waitForEnter();
+    l = 1; 
+    score = 0;
+    realscore = 0;
+    lives = 3;
   }
 }
