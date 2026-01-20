@@ -1,6 +1,7 @@
 * {
     box-sizing: border-box;
     margin: 0px;
+
 }
 
 body {
@@ -10,6 +11,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+
 }
 
 :root {
@@ -48,7 +50,8 @@ input:focus {
     font-size: 30px;
     color: white;
     margin: 0;
-    font-family: sans-serif;
+    font-family: "Oswald", sans-serif;
+    font-size: 700;
 
     display: flex;
     justify-content: center;
@@ -93,6 +96,8 @@ input:focus {
     font-size: 25px;
     transition: color 0.75s ease-out;
     transition-delay: calc(var(--d) * 0.12s);
+    font-family: "Oswald", sans-serif;
+    font-size: 700;
 }
 
 .box.text-fade {
@@ -113,6 +118,8 @@ input:focus {
     position: absolute;
     top: 12px;
     left: 25px;
+    font-family: "Oswald", sans-serif;
+    font-size: 700;
 }
 
 .main {
@@ -144,15 +151,21 @@ input:focus {
     top: 12px;
     right: 25px;
 }
+
 .equation {
     color: white;
     font-size: 50px;
+    font-family: "Oswald", sans-serif;
+    font-size: 700;
 
 }
-.highscore{
+
+.highscore {
     font-size: 30px;
     color: white;
     position: absolute;
     bottom: 0px;
     left: 0px;
+    font-family: "Oswald", sans-serif;
+    font-size: 700;
 }

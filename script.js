@@ -373,9 +373,11 @@ async function gamestart() {
             if (bil) {
               if (realscore > playerdata.realscore) {
                 playerdata.realscore = realscore;
+                highscore.innerHTML = `Highscore: ${realscore}`;
               }
             } else {
               playerdata.realscore = realscore;
+              highscore.innerHTML = `Highscore: ${realscore}`;
               playerdata.ifcompleted = true;
               bil = true;
             }
