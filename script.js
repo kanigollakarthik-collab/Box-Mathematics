@@ -350,6 +350,7 @@ async function gamestart() {
       lives = 3;
       cnt = 0;
       create(l);
+        eqn.innerHTML = '';
       main.style.display = "";
       await sleep(3000);
       runAnimation(0);
