@@ -27,6 +27,8 @@ let l = 1;
 let playerdata;
 let highscore = document.querySelector(".highscore");
 let usernameKey;
+let bil;
+let dummyInput = document.getElementById("dummy-keyboard");
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 main.style.display = "none";
 function addinsrtuct(a) {
@@ -245,7 +247,15 @@ function waitForInput(targetAnswer) {
     document.addEventListener("TIMEUP", timehandler);
   });
 }
-let bil;
+
+window.addEventListener("click", function() {
+    dummyInput.focus();
+});
+
+dummyInput.addEventListener("input", function() {
+    this.value = "";
+});
+
 body.addEventListener("keydown", function (e) {
   if (isAnimating) return;
 
