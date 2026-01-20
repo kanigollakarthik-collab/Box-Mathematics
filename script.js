@@ -31,6 +31,9 @@ let bil;
 let dummyInput = document.getElementById("dummy-keyboard");
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 main.style.display = "none";
+
+//Animation for the inctruction sequence
+
 function addinsrtuct(a) {
   setTimeout(function () {
     instruct.innerHTML = arr[a];
@@ -40,6 +43,8 @@ function addinsrtuct(a) {
     isAnimating = false;
   }, 3500);
 }
+
+//Animation for the cube waves
 
 function runAnimation(a) {
   grid.classList.add("trigger-wave");
@@ -60,6 +65,8 @@ function runAnimation(a) {
   }
 }
 
+//To create the grids
+
 function create(l) {
   let c;
   let r;
@@ -73,12 +80,12 @@ function create(l) {
     c = 3;
   } else if (l === 2) {
     n = 80;
-    r = 5;
-    c = 5;
+    r = 4;
+    c = 4;
   } else if (l === 3) {
     n = 60;
-    r = 8;
-    c = 8;
+    r = 5;
+    c = 5;
   }
 
   for (let i = 0; i < r; i++) {
@@ -113,12 +120,14 @@ function create(l) {
   }
 }
 
+// A timer function
+
 function timer(l) {
   clearInterval(id);
   let a;
   if (l === 1) a = 120;
-  else if (l == 2) a = 600;
-  else if (l === 3) a = 1800;
+  else if (l == 2) a = 200;
+  else if (l === 3) a = 600;
   let countersec = 0;
   let countermin = 0;
   score = a;
@@ -147,6 +156,8 @@ function timer(l) {
   }, 1000);
 }
 
+//To pick the random boxes from the remaining ones
+
 function RNG() {
   if (boxarr.length === 0) return 0;
 
@@ -154,21 +165,25 @@ function RNG() {
   return boxarr.splice(RIG, 1)[0];
 }
 
+//Create the box array to pick from
+
 function start(l) {
   let length;
   if (l === 1) length = 9;
-  else if (l === 2) length = 25;
-  else if (l === 3) length = 64;
+  else if (l === 2) length = 16;
+  else if (l === 3) length = 25;
   boxarr = [];
   for (let i = 1; i <= length; i++) {
     boxarr.push(i);
   }
 }
 
+//To generate the random equation
+
 function eqngen(a, l) {
   if (l === 1) r = 3;
-  else if (l === 2) r = 5;
-  else if (l === 3) r = 8;
+  else if (l === 2) r = 4;
+  else if (l === 3) r = 5;
 
   let x = ((a - 1) % r) + 1;
   let y = Math.floor((a - 1) / r) + 1;
@@ -195,6 +210,8 @@ function redlife() {
   lives--;
 }
 
+//To listen for the keyboard where a simple eventlistener won't fit
+
 function waitForEnter() {
   return new Promise((resolve) => {
     function handler(e) {
@@ -207,6 +224,8 @@ function waitForEnter() {
     document.body.addEventListener("keydown", handler);
   });
 }
+
+//To listen for the keyboard where a simple eventlistener won't fit
 
 function waitForInput(targetAnswer) {
   return new Promise((resolve) => {
@@ -248,9 +267,13 @@ function waitForInput(targetAnswer) {
   });
 }
 
+//For smaller devices with no physical keyboards
+
 window.addEventListener("click", function() {
     dummyInput.focus();
 });
+
+//For smaller devices with no physical keyboards
 
 dummyInput.addEventListener("input", function() {
     this.value = "";
