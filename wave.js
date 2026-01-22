@@ -1,6 +1,7 @@
 /* wave.js - Final Polish */
 var xlink = "http://www.w3.org/1999/xlink";
-var imgUrl = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/106114/ripple512.png";
+var imgUrl =
+  "https://s3-us-west-2.amazonaws.com/s.cdpn.io/106114/ripple512.png";
 
 var settings = {
   waveDuration: 2.0,
@@ -8,7 +9,7 @@ var settings = {
 
   // This is your "Reference Intensity" for a standard 300px tall element.
   // The script will auto-scale this for smaller/larger elements.
-  waveIntensity: 55
+  waveIntensity: 55,
 };
 
 var rippleFilter = document.querySelector("#ripple-filter");
@@ -35,7 +36,10 @@ toBase64(imgUrl, function (data) {
   // 2. Watchdog for class changes
   var observer = new MutationObserver(function (mutations) {
     mutations.forEach(function (mutation) {
-      if (mutation.type === "attributes" && mutation.attributeName === "class") {
+      if (
+        mutation.type === "attributes" &&
+        mutation.attributeName === "class"
+      ) {
         var element = mutation.target;
         if (element.classList.contains("ripple-target")) {
           if (target !== element) {
@@ -43,8 +47,10 @@ toBase64(imgUrl, function (data) {
             target = element;
             initAndStart();
           }
-        }
-        else if (target === element && !element.classList.contains("ripple-target")) {
+        } else if (
+          target === element &&
+          !element.classList.contains("ripple-target")
+        ) {
           stopRipple();
           target = null;
         }
@@ -52,7 +58,11 @@ toBase64(imgUrl, function (data) {
     });
   });
 
-  observer.observe(document.body, { attributes: true, subtree: true, attributeFilter: ['class'] });
+  observer.observe(document.body, {
+    attributes: true,
+    subtree: true,
+    attributeFilter: ["class"],
+  });
 
   // 3. Handle Resize
   window.addEventListener("resize", function () {
@@ -114,7 +124,7 @@ function startRipple() {
   if (dim === 0) dim = 100; // safety fallback
 
   // 2. AUTO-SCALER FOR INTENSITY
-  // If element is 300px, use 100% intensity. 
+  // If element is 300px, use 100% intensity.
   // If element is 50px (Input), use ~16% intensity.
   // This makes the ripple look "Consistent" across all sizes.
   var scaleFactor = dim / 300;
@@ -127,9 +137,11 @@ function startRipple() {
 
   // 3. Smooth Entry
   var dispMap = rippleFilter.querySelector("feDisplacementMap");
-  TweenMax.fromTo(dispMap, 1.5,
+  TweenMax.fromTo(
+    dispMap,
+    1.5,
     { attr: { scale: 0 } },
-    { attr: { scale: actualIntensity }, ease: Power2.easeOut }
+    { attr: { scale: actualIntensity }, ease: Power2.easeOut },
   );
 
   var visibleTime = settings.waveDuration / settings.waveSize;
@@ -153,7 +165,10 @@ function startRipple() {
 
 function createAndAnimateWave(width, height) {
   var waveId = "ripple-" + Date.now() + "-" + Math.floor(Math.random() * 1000);
-  var feImage = document.createElementNS("http://www.w3.org/2000/svg", "feImage");
+  var feImage = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "feImage",
+  );
 
   feImage.setAttribute("id", waveId);
   feImage.setAttribute("result", waveId);
@@ -169,25 +184,25 @@ function createAndAnimateWave(width, height) {
   var centerX = width / 2;
 
   // YOUR STYLISTIC CHOICE: Origin is lower than center
-  var centerY = (height / 2) + (height * 0.2);
+  var centerY = height / 2 + height * 0.2;
 
   var maxDim = Math.max(width, height);
   var sizePx = maxDim * settings.waveSize;
 
   var jitterRange = width * 0.2;
-  var jitterX = (Math.random() * jitterRange) - (jitterRange / 2);
-  var jitterY = (Math.random() * jitterRange) - (jitterRange / 2);
+  var jitterX = Math.random() * jitterRange - jitterRange / 2;
+  var jitterY = Math.random() * jitterRange - jitterRange / 2;
 
   // Apply jitter
   var startX = centerX;
   var startY = centerY;
 
   // Calculate top-left corner for the expanding square
-  var endX = (centerX - (sizePx / 2)) + jitterX;
-  var endY = (centerY - (sizePx / 2)) + jitterY;
+  var endX = centerX - sizePx / 2 + jitterX;
+  var endY = centerY - sizePx / 2 + jitterY;
 
   var start = {
-    attr: { x: startX, y: startY, width: 0, height: 0 }
+    attr: { x: startX, y: startY, width: 0, height: 0 },
   };
 
   var end = {
@@ -199,8 +214,8 @@ function createAndAnimateWave(width, height) {
         var index = activeWaves.indexOf(waveId);
         if (index > -1) activeWaves.splice(index, 1);
         updateMergeNode();
-      } catch (e) { }
-    }
+      } catch (e) {}
+    },
   };
 
   TweenMax.fromTo(feImage, settings.waveDuration, start, end);
@@ -210,12 +225,18 @@ function updateMergeNode() {
   while (mergeNode.firstChild) {
     mergeNode.removeChild(mergeNode.firstChild);
   }
-  var bgNode = document.createElementNS("http://www.w3.org/2000/svg", "feMergeNode");
+  var bgNode = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "feMergeNode",
+  );
   bgNode.setAttribute("in", "neutral");
   mergeNode.appendChild(bgNode);
 
   activeWaves.forEach(function (id) {
-    var node = document.createElementNS("http://www.w3.org/2000/svg", "feMergeNode");
+    var node = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "feMergeNode",
+    );
     node.setAttribute("in", id);
     mergeNode.appendChild(node);
   });
@@ -237,7 +258,14 @@ function toBase64(url, callback) {
     var centerY = canvas.height / 2;
     var radius = Math.min(centerX, centerY);
 
-    var gradient = ctx.createRadialGradient(centerX, centerY, radius * 0.7, centerX, centerY, radius);
+    var gradient = ctx.createRadialGradient(
+      centerX,
+      centerY,
+      radius * 0.7,
+      centerX,
+      centerY,
+      radius,
+    );
     gradient.addColorStop(0, "rgba(0, 0, 0, 1)");
     gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
 
