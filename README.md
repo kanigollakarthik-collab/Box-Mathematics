@@ -6,6 +6,13 @@ This is a game involving basic arithmetic problems; the twist is that to solve t
 
 To play the game, you must use the indices shown at the start, which are just like 2D matrix indices but starting with 1. The row traversal is the x-coordinate, and the column traversal is the y-coordinate. You must use these x, y values to substitute into the given equation and type the answer out. Afterward, you will receive feedback on whether your input is right or wrong, and then the next cube will be highlighted. You have to complete the grid and 3 levels in this manner.
 
+## Features Implemented
+* **Dynamic Grid Generation:** Automatically creates 3x3, 4x4, or 5x5 grids using JavaScript based on the current difficulty level.
+* **Game State Management:** Tracks lives, countdown timer, and level progression (Levels 1-3) with win/loss conditions.
+* **Persistent High Scores:** Utilizes `localStorage` to save player usernames and track high scores across sessions.
+* **Interactive UI Animations:** Features custom DOM-manipulated animations including a "Wave" effect for the grid and Ripple effects for text feedback.
+* **Cross-Device Input:** Supports both desktop (physical keyboard) and mobile devices (virtual keyboard via hidden input).
+
 The project uses animations that manipulate the DOM for a very good look. What the project does at its core is: Create (creates the boxes and lives) -> add and track time with a timer -> generate random numbers to select random boxes -> generate equations for that box -> wait until the user has given an answer -> repeat until all the boxes are covered. (If achieved before the timer runs out and less than 2 errors committed -> next level; otherwise -> repeat level) -> repeat until all levels are cleared -> Game completed.
 
 To that, I’ve tried to add a lot of flair with animations all over. There is also a local storage system that tracks high scores with a username so that multiple people can keep track of their progress. Scores are calculated as the surplus of time the players had after completing the respective level.

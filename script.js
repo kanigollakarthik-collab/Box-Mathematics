@@ -1,33 +1,33 @@
-let instruct = document.querySelector(".instruction");
+let instructionElement = document.querySelector(".instruction");
 let body = document.querySelector("body");
 let count = 0;
 let time = document.querySelector(".timer");
 let isAnimating = false;
-let boxarr = [];
+let availableNumbers = [];
 let lives = 3;
 let live = document.querySelector(".hearts");
-let cnt = 0;
+let livesLostCount = 0;
 let grid = document.querySelector(".main-box");
 let main = document.querySelector(".main");
-let arr = [
+let instructionMessages = [
   "This is a Math typing game",
   "Please make a mental note of the indexes<br> of the grid that's about to be shown",
   "You are required to perform <br>mathematical operations  on the indexes of the <br>highlighted boxes  and type them asap",
   "You move in a time constraint <br> with only room for 3 errors",
   ` <input type="text" placeholder="Enter your username" class="inp">`,
 ];
-let realboxarr = [];
-let liv;
-let eqn = document.querySelector(".equation");
-let ifon = true;
+let gridCells = [];
+let heartElements;
+let equationDisplay = document.querySelector(".equation");
+let isGameRunning = true;
 let id;
 let score = 0;
 let realscore = 0;
-let l = 1;
+let currentLevel = 1;
 let playerdata;
 let highscore = document.querySelector(".highscore");
 let usernameKey;
-let bil;
+let hasCompletedGame;
 let dummyInput = document.getElementById("dummy-keyboard");
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 main.style.display = "none";
@@ -36,10 +36,10 @@ main.style.display = "none";
 
 function addinsrtuct(a) {
   setTimeout(function () {
-    instruct.innerHTML = arr[a];
+    instructionElement.innerHTML = instructionMessages[a];
   }, 2000);
   setTimeout(function () {
-    instruct.classList.remove("ripple-target");
+    instructionElement.classList.remove("ripple-target");
     isAnimating = false;
   }, 3500);
 }
@@ -54,7 +54,7 @@ function runAnimation(a) {
   }, 3000);
 
   setTimeout(() => {
-    realboxarr.forEach((e) => {
+    gridCells.forEach((e) => {
       e.classList.add("text-fade");
     });
   }, 10);
@@ -67,22 +67,22 @@ function runAnimation(a) {
 
 //To create the grids
 
-function create(l) {
+function create(currentLevel) {
   let c;
   let r;
   let n;
   grid.innerHTML = "";
   live.innerHTML = "";
   time.innerHTML = "00:00";
-  if (l === 1) {
+  if (currentLevel === 1) {
     n = 100;
     r = 3;
     c = 3;
-  } else if (l === 2) {
+  } else if (currentLevel === 2) {
     n = 90;
     r = 4;
     c = 4;
-  } else if (l === 3) {
+  } else if (currentLevel === 3) {
     n = 80;
     r = 5;
     c = 5;
@@ -104,7 +104,7 @@ function create(l) {
     li.classList.add("heart");
     live.appendChild(li);
   }
-  liv = document.querySelectorAll(".heart");
+  heartElements = document.querySelectorAll(".heart");
   document.documentElement.style.setProperty(
     "--grid-columns",
     `repeat(${r}, ${n}px)`,
@@ -113,21 +113,21 @@ function create(l) {
     "--grid-rows",
     `repeat(${r}, ${n}px)`,
   );
-  realboxarr = document.querySelectorAll(".box");
+  gridCells = document.querySelectorAll(".box");
   for (let i = 0; i < r; i++) {
-    realboxarr[i].innerHTML = i + 1;
-    realboxarr[r * i].innerHTML = i + 1;
+    gridCells[i].innerHTML = i + 1;
+    gridCells[r * i].innerHTML = i + 1;
   }
 }
 
 // A timer function
 
-function timer(l) {
+function timer(currentLevel) {
   clearInterval(id);
   let a;
-  if (l === 1) a = 120;
-  else if (l == 2) a = 200;
-  else if (l === 3) a = 600;
+  if (currentLevel === 1) a = 120;
+  else if (currentLevel == 2) a = 200;
+  else if (currentLevel === 3) a = 600;
   let countersec = 0;
   let countermin = 0;
   score = a;
@@ -148,7 +148,7 @@ function timer(l) {
 
     time.innerHTML = displayMin + ":" + displaySec;
     if (countermin * 60 + countersec == a) {
-      ifon = false;
+      isGameRunning = false;
       document.dispatchEvent(new Event("TIMEUP"));
       clearInterval(id);
     }
@@ -159,31 +159,31 @@ function timer(l) {
 //To pick the random boxes from the remaining ones
 
 function RNG() {
-  if (boxarr.length === 0) return 0;
+  if (availableNumbers.length === 0) return 0;
 
-  let RIG = Math.floor(Math.random() * boxarr.length);
-  return boxarr.splice(RIG, 1)[0];
+  let RIG = Math.floor(Math.random() * availableNumbers.length);
+  return availableNumbers.splice(RIG, 1)[0];
 }
 
 //Create the box array to pick from
 
-function start(l) {
+function start(currentLevel) {
   let length;
-  if (l === 1) length = 9;
-  else if (l === 2) length = 16;
-  else if (l === 3) length = 25;
-  boxarr = [];
+  if (currentLevel === 1) length = 9;
+  else if (currentLevel === 2) length = 16;
+  else if (currentLevel === 3) length = 25;
+  availableNumbers = [];
   for (let i = 1; i <= length; i++) {
-    boxarr.push(i);
+    availableNumbers.push(i);
   }
 }
 
 //To generate the random equation
 
-function eqngen(a, l) {
-  if (l === 1) r = 3;
-  else if (l === 2) r = 4;
-  else if (l === 3) r = 5;
+function eqngen(a, currentLevel) {
+  if (currentLevel === 1) r = 3;
+  else if (currentLevel === 2) r = 4;
+  else if (currentLevel === 3) r = 5;
 
   let x = ((a - 1) % r) + 1;
   let y = Math.floor((a - 1) / r) + 1;
@@ -206,7 +206,7 @@ function eqngen(a, l) {
 }
 
 function redlife() {
-  liv[cnt++].style.display = "none";
+  heartElements[livesLostCount++].style.display = "none";
   lives--;
 }
 
@@ -285,7 +285,7 @@ body.addEventListener("keydown", function (e) {
   if (count < 5) {
     if (e.key === "Enter") {
       isAnimating = true;
-      instruct.classList.add("ripple-target");
+      instructionElement.classList.add("ripple-target");
 
       addinsrtuct(count++);
     }
@@ -299,42 +299,42 @@ body.addEventListener("keydown", function (e) {
       }
       if (!localStorage.getItem(inp.value)) {
         playerdata = {
-          l: 1,
+          currentLevel: 1,
           realscore: 0,
           score: 0,
-          ifcompleted: false,
+          hasCompletedGame: false,
         };
-        l = playerdata.l;
+        currentLevel = playerdata.currentLevel;
         realscore = playerdata.realscore;
         score = playerdata.score;
-        bil = playerdata.ifcompleted;
+        hasCompletedGame = playerdata.hasCompletedGame;
         localStorage.setItem(inp.value, JSON.stringify(playerdata));
       } else {
         try {
           playerdata = JSON.parse(localStorage.getItem(inp.value));
         } catch (e) {
-          playerdata = { l: 1, realscore: 0, score: 0, ifcompleted: false };
+          playerdata = { currentLevel: 1, realscore: 0, score: 0, hasCompletedGame: false };
         }
-        l = playerdata.l;
+        currentLevel = playerdata.currentLevel;
         realscore = playerdata.score;
       }
-      if (playerdata.ifcompleted) {
+      if (playerdata.hasCompletedGame) {
         highscore.innerHTML = `Highscore: ${realscore}`;
-        if (l === 4) {
-          l = 1;
+        if (currentLevel === 4) {
+          currentLevel = 1;
           realscore = 0;
           score = 0;
         }
-        bil = playerdata.ifcompleted;
+        hasCompletedGame = playerdata.hasCompletedGame;
       } else {
         highscore.innerHTML = "Yet to Complete";
       }
 
       usernameKey = inp.value;
 
-      instruct.innerHTML = ``;
+      instructionElement.innerHTML = ``;
 
-      instruct.style.display = "none";
+      instructionElement.style.display = "none";
       main.style.display = "";
       gamestart();
       count++;
@@ -344,34 +344,34 @@ body.addEventListener("keydown", function (e) {
 
 async function gamestart() {
   while (true) {
-    while (l < 4) {
-      instruct.style.display = "none";
-      instruct.classList.remove("ripple-target");
+    while (currentLevel < 4) {
+      instructionElement.style.display = "none";
+      instructionElement.classList.remove("ripple-target");
       lives = 3;
-      cnt = 0;
-      create(l);
-        eqn.innerHTML = '';
+      livesLostCount = 0;
+      create(currentLevel);
+        equationDisplay.innerHTML = '';
       main.style.display = "";
       await sleep(3000);
       runAnimation(0);
       await sleep(1000);
-      timer(l);
-      ifon = true;
+      timer(currentLevel);
+      isGameRunning = true;
 
-      start(l);
-      while (lives > 0 && ifon) {
+      start(currentLevel);
+      while (lives > 0 && isGameRunning) {
         let LOCRNG = RNG();
-        let thearr = eqngen(LOCRNG, l);
-        eqn.innerHTML = thearr[1];
+        let thearr = eqngen(LOCRNG, currentLevel);
+        equationDisplay.innerHTML = thearr[1];
         if (LOCRNG === 0) {
           realscore += score;
-          l++;
+          currentLevel++;
 
-          playerdata.l = l;
+          playerdata.currentLevel = currentLevel;
           playerdata.score = realscore;
 
-          if (l > 3) {
-            if (bil) {
+          if (currentLevel > 3) {
+            if (hasCompletedGame) {
               if (realscore > playerdata.realscore) {
                 playerdata.realscore = realscore;
                 highscore.innerHTML = `Highscore: ${realscore}`;
@@ -379,8 +379,8 @@ async function gamestart() {
             } else {
               playerdata.realscore = realscore;
               highscore.innerHTML = `Highscore: ${realscore}`;
-              playerdata.ifcompleted = true;
-              bil = true;
+              playerdata.hasCompletedGame = true;
+              hasCompletedGame = true;
             }
           }
 
@@ -390,40 +390,40 @@ async function gamestart() {
 
           break;
         }
-        realboxarr[LOCRNG - 1].style.backgroundColor = "#00d2ff";
+        gridCells[LOCRNG - 1].style.backgroundColor = "#00d2ff";
         let victory = await waitForInput(thearr[0]);
         if (victory) {
-          realboxarr[LOCRNG - 1].style.backgroundColor = "#00ff37";
+          gridCells[LOCRNG - 1].style.backgroundColor = "#00ff37";
 
           continue;
         } else {
-          realboxarr[LOCRNG - 1].style.backgroundColor = "#ff3700";
-          realboxarr[LOCRNG - 1].style.animationDuration = "0s";
+          gridCells[LOCRNG - 1].style.backgroundColor = "#ff3700";
+          gridCells[LOCRNG - 1].style.animationDuration = "0s";
           redlife();
 
           continue;
         }
       }
       main.style.display = "none";
-      instruct.style.display = "";
+      instructionElement.style.display = "";
 
-      if (lives == 0 || !ifon) {
-        instruct.innerHTML = `Game Over<br>Press Enter to Restart`;
+      if (lives == 0 || !isGameRunning) {
+        instructionElement.innerHTML = `Game Over<br>Press Enter to Restart`;
         await waitForEnter();
-      } else if (l === 4) {
+      } else if (currentLevel === 4) {
         break;
       } else {
-        instruct.innerHTML = `Level Complete<br>Press Enter for Next Level`;
+        instructionElement.innerHTML = `Level Complete<br>Press Enter for Next Level`;
         await waitForEnter();
       }
       clearInterval(id);
-      instruct.classList.add("ripple-target");
+      instructionElement.classList.add("ripple-target");
       await sleep(2000);
     }
-    instruct.classList.remove("ripple-target");
-    instruct.innerHTML = `GAME COMPLETED <br> SCORE:${playerdata.realscore}<br> Press Enter for again`;
+    instructionElement.classList.remove("ripple-target");
+    instructionElement.innerHTML = `GAME COMPLETED <br> SCORE:${playerdata.realscore}<br> Press Enter for again`;
     await waitForEnter();
-    l = 1; 
+    currentLevel = 1; 
     score = 0;
     realscore = 0;
     lives = 3;
